@@ -1,0 +1,8 @@
+/* archon.social — minimal global styles (MUI handles component styling) */
+
+.App {
+  min-height: 100vh;
+  padding: 24px 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}

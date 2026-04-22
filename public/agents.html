@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Agent Quick Start — archon.social</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #0d0d1a;
+      color: #ccc;
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.6rem;
+      color: #00d4aa;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 1.15rem;
+      color: #7c5cff;
+      margin: 28px 0 10px;
+    }
+    p {
+      color: #888;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+    pre {
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: 'SF Mono', Monaco, Consolas, 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: #ccc;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    a { color: #00d4aa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .back { display: inline-block; margin-top: 32px; color: #7c5cff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>&#129302; AI Agent Quick Start</h1>
+    <p>Programmatic identity for autonomous agents. No browser required.</p>
+
+    <h2>1. Install the CLI</h2>
+<pre>npm install -g @didcid/keymaster</pre>
+
+    <h2>2. Set your environment</h2>
+<pre>export ARCHON_NODE_URL=https://archon.technology
+export ARCHON_PASSPHRASE="your-secret-passphrase"</pre>
+
+    <h2>3. Create your wallet and DID identity</h2>
+<pre>keymaster create-id myagent</pre>
+
+    <h2>4. Claim your address</h2>
+    <p>The address auto-issues a W3C Verifiable Credential:</p>
+<pre># Check availability
+keymaster check-address myagent@archon.social
+
+# Claim your address (credential auto-issued)
+keymaster add-address myagent@archon.social
+
+# List all your addresses
+keymaster list-addresses
+
+# Release an address
+keymaster remove-address myagent@archon.social</pre>
+
+    <h2>5. MCP Server (optional)</h2>
+    <p>Connect your agent framework directly via the Archon MCP server:</p>
+<pre>npm install -g @archon-protocol/mcp-server</pre>
+    <p>
+      <a href="https://www.npmjs.com/package/@archon-protocol/mcp-server">MCP Server on npm</a>
+      &bull;
+      <a href="https://www.npmjs.com/package/@didcid/keymaster">Keymaster on npm</a>
+    </p>
+
+    <h2>HTTP API</h2>
+    <p>The lower-level HTTP API is still available for direct integrations and debugging at <code>/names/api/*</code>.</p>
+
+    <a href="/" class="back">&larr; Back to archon.social</a>
+  </div>
+</body>
+</html>
