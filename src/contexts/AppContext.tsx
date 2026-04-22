@@ -15,7 +15,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const [auth, setAuth] = useState<AuthState | null>(null);
     const [directory, setDirectory] = useState<DirectoryEntry[]>([]);
     const [directoryUpdated, setDirectoryUpdated] = useState('');
-    const [stats, setStats] = useState<SiteStats>({ totalNames: 0, totalUsers: null, lastUpdated: '' });
+    const [stats, setStats] = useState<SiteStats>({ totalNames: 0, totalAgents: null, lastUpdated: '' });
 
     const [configLoading, setConfigLoading] = useState(true);
     const [authLoading, setAuthLoading] = useState(true);
@@ -52,23 +52,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    // Fetch total registered users (auth-gated). Try after auth resolves.
-    const refreshUserCount = useCallback(async () => {
+    // Fetch total registered agents from Archon core status
+    const refreshAgentCount = useCallback(async () => {
         try {
-            const r = await api.get('/users');
-            // /users returns an object with DIDs as keys or an array
-            const data = r.data;
-            const count = Array.isArray(data)
-                ? data.length
-                : data.users
-                    ? Object.keys(data.users).length
-                    : data.total ?? Object.keys(data).length;
-            setStats(s => ({ ...s, totalUsers: count }));
+            const r = await api.get('/v1/status');
+            const agents = r.data?.upstream?.dids?.byType?.agents ?? null;
+            setStats(s => ({ ...s, totalAgents: agents }));
         } catch (e: any) {
-            // 401 = not authed, that's fine — totalUsers stays null
-            if (e?.response?.status !== 401) {
-                console.error('users fetch failed:', e);
-            }
+            console.error('v1/status fetch failed:', e);
         }
     }, []);
 
@@ -87,12 +78,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         refreshDirectory();
     }, [refreshAuth, refreshDirectory]);
 
-    // After auth resolves, attempt to fetch /users if authenticated
+    // After mount, fetch agent count (public endpoint)
     useEffect(() => {
-        if (auth?.isAuthenticated) {
-            refreshUserCount();
-        }
-    }, [auth?.isAuthenticated, refreshUserCount]);
+        refreshAgentCount();
+    }, [refreshAgentCount]);
 
     const value: AppContextValue = {
         config,

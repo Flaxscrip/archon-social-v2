@@ -25,7 +25,7 @@ export interface DirectoryEntry {
 
 export interface SiteStats {
     totalNames: number;
-    totalUsers: number | null;       // null if not authed (can't fetch /users)
+    totalAgents: number | null;    // null while loading, from /api/v1/status
     lastUpdated: string;
 }
 

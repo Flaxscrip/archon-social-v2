@@ -50,9 +50,9 @@ export function ViewMembers() {
                         <Typography variant="body2" sx={{ color: '#666' }}>
                             {directory.length} {directory.length === 1 ? 'name' : 'names'} claimed
                         </Typography>
-                        {stats.totalUsers !== null && (
+                        {stats.totalAgents !== null && (
                             <Typography variant="body2" sx={{ color: '#888' }}>
-                                · {stats.totalUsers} {stats.totalUsers === 1 ? 'user' : 'users'} registered
+                                · {stats.totalAgents.toLocaleString()} {stats.totalAgents === 1 ? 'agent' : 'agents'} registered
                             </Typography>
                         )}
                     </Box>

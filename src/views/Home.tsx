@@ -126,9 +126,9 @@ export function Home() {
                         }}>
                             <Box>
                                 <Typography variant="h5" sx={{ fontWeight: 700, color: '#2c3e50' }}>
-                                    {stats.totalUsers !== null ? stats.totalUsers.toLocaleString() : '—'}
+                                    {stats.totalAgents !== null ? stats.totalAgents.toLocaleString() : '—'}
                                 </Typography>
-                                <Typography variant="body2" sx={{ color: '#888' }}>Registered users</Typography>
+                                <Typography variant="body2" sx={{ color: '#888' }}>Registered agents</Typography>
                             </Box>
                             <Box>
                                 <Typography variant="h5" sx={{ fontWeight: 700, color: '#2c3e50' }}>
