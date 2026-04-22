@@ -23,11 +23,18 @@ export interface DirectoryEntry {
     did: string;
 }
 
+export interface SiteStats {
+    totalNames: number;
+    totalUsers: number | null;       // null if not authed (can't fetch /users)
+    lastUpdated: string;
+}
+
 export interface AppContextValue {
     config: AppConfig | null;
     auth: AuthState | null;
     directory: DirectoryEntry[];
     directoryUpdated: string;
+    stats: SiteStats;
 
     configLoading: boolean;
     authLoading: boolean;

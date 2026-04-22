@@ -9,7 +9,7 @@ import api from '../api';
 interface DirectoryEntry { name: string; did: string; }
 
 export function ViewMembers() {
-    const { config } = useApp();
+    const { config, stats } = useApp();
     const [directory, setDirectory] = useState<DirectoryEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [lastUpdated, setLastUpdated] = useState('');
@@ -45,10 +45,17 @@ export function ViewMembers() {
         <div className="App">
             <Header title="Member Directory" />
             <Box sx={{ maxWidth: 800, mx: 'auto' }}>
-                <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant="body2" sx={{ color: '#666' }}>
-                        {directory.length} registered {directory.length === 1 ? 'member' : 'members'}
-                    </Typography>
+                <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 2 }}>
+                        <Typography variant="body2" sx={{ color: '#666' }}>
+                            {directory.length} {directory.length === 1 ? 'name' : 'names'} claimed
+                        </Typography>
+                        {stats.totalUsers !== null && (
+                            <Typography variant="body2" sx={{ color: '#888' }}>
+                                · {stats.totalUsers} {stats.totalUsers === 1 ? 'user' : 'users'} registered
+                            </Typography>
+                        )}
+                    </Box>
                     {lastUpdated && (
                         <Typography variant="body2" sx={{ color: '#888' }}>
                             Last updated: {format(new Date(lastUpdated), 'MMM d, yyyy h:mm a')}

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Box, Button, Typography, TextField } from '@mui/material';
+import { Box, Button, Typography, TextField, Avatar } from '@mui/material';
 import { useApp } from '../contexts/AppContext';
 import { Header } from '../components/Layout';
+import api from '../api';
 
 export function Home() {
-    const { config, auth, directory, directoryLoading } = useApp();
+    const { config, auth, directory, directoryLoading, stats } = useApp();
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
@@ -125,6 +126,12 @@ export function Home() {
                         }}>
                             <Box>
                                 <Typography variant="h5" sx={{ fontWeight: 700, color: '#2c3e50' }}>
+                                    {stats.totalUsers !== null ? stats.totalUsers.toLocaleString() : '—'}
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: '#888' }}>Registered users</Typography>
+                            </Box>
+                            <Box>
+                                <Typography variant="h5" sx={{ fontWeight: 700, color: '#2c3e50' }}>
                                     {directoryLoading ? '…' : directory.length.toLocaleString()}
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: '#888' }}>Names claimed</Typography>
@@ -171,12 +178,19 @@ export function Home() {
                                         to={`/member/${entry.name}`}
                                         sx={{
                                             display: 'flex', alignItems: 'center', gap: 1.5,
-                                            p: 2, borderRadius: 2, textDecoration: 'none',
+                                            p: 1.5, borderRadius: 2, textDecoration: 'none',
                                             border: '1px solid #e9ecef', backgroundColor: '#fafbfc',
                                             '&:hover': { backgroundColor: '#f0f2ff', borderColor: '#7c5cff' },
                                             transition: 'all 0.15s ease',
                                         }}
                                     >
+                                        <Avatar
+                                            src={`${api.defaults.baseURL}/name/${entry.name}/avatar`}
+                                            alt={entry.name}
+                                            sx={{ width: 36, height: 36 }}
+                                        >
+                                            {entry.name[0]?.toUpperCase()}
+                                        </Avatar>
                                         <Typography sx={{ fontWeight: 600, color: '#2c3e50', fontSize: '0.95rem' }}>
                                             {entry.name}@{serviceDomain}
                                         </Typography>
