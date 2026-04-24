@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Box, Button, Typography, TextField, Avatar } from '@mui/material';
 import { useApp } from '../contexts/AppContext';
@@ -6,20 +6,38 @@ import { Header } from '../components/Layout';
 import api from '../api';
 
 export function Home() {
-    const { config, auth, directory, directoryLoading, stats } = useApp();
+    const { config, auth, authLoading, directory, directoryLoading, stats, refreshAuth } = useApp();
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
+
+    // Re-verify auth on mount (handles direct page load with session cookie)
+    useEffect(() => {
+        refreshAuth();
+    }, [refreshAuth]);
 
     const isAuthenticated = !!(auth && auth.isAuthenticated);
     const userDID = auth?.userDID || '';
     const userName = auth?.profile?.name || '';
     const logins = auth?.profile?.logins || 0;
     const serviceDomain = config?.serviceDomain || '';
-    const serviceName = config?.serviceName || 'archon.social';
+    const serviceName = config?.serviceName === 'herald' || config?.serviceName === 'name-service'
+        ? 'Archon.social'
+        : (config?.serviceName || 'Archon.social');
 
     const filteredDirectory = searchQuery
         ? directory.filter(e => e.name.toLowerCase().includes(searchQuery.toLowerCase()))
         : directory;
+
+    // Show loading state while verifying auth (prevents flash of public page)
+    if (authLoading) {
+        return (
+            <div className="App">
+                <Box sx={{ maxWidth: 600, mx: 'auto', textAlign: 'center', py: 8 }}>
+                    <Typography variant="h5" sx={{ color: '#666' }}>Loading...</Typography>
+                </Box>
+            </div>
+        );
+    }
 
     return (
         <div className="App">

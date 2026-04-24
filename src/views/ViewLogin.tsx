@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { QRCodeSVG } from 'qrcode.react';
 import api from '../api';
+import { useApp } from '../contexts/AppContext';
 
 export function ViewLogin() {
     const [challengeDID, setChallengeDID] = useState('');
     const [challengeURL, setChallengeURL] = useState<string | null>(null);
     const [challengeCopied, setChallengeCopied] = useState(false);
     const navigate = useNavigate();
+    const { refreshAuth } = useApp();
     const intervalIdRef = useRef<number | null>(null);
 
     useEffect(() => {
@@ -19,7 +21,8 @@ export function ViewLogin() {
                         const response = await api.get('/check-auth');
                         if (response.data.isAuthenticated) {
                             if (intervalIdRef.current) clearInterval(intervalIdRef.current);
-                            navigate('/');
+                            await refreshAuth();
+                            window.location.href = '/';
                         }
                     } catch (e) {
                         console.error('Failed to check authentication:', e);
